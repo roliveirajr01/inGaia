@@ -1,19 +1,28 @@
-import React, { Component, Fragment } from 'react'
-import {ContainCard} from './Style'
-class Cards extends Component {
-    render() {
-        const data = this.props
-        return (
-            <ContainCard>
-                <img src={data.image} />
-                <div className="infos-card">
-                    <p>{data.name}</p>
-                    <span>{data.species}</span>
-                </div>
+import React, { useState, Fragment } from "react";
+import { ContainCard } from "./Style";
+import LightBox from "../lightbox/lightbox"
 
-            </ContainCard>
-        )
+const Cards = function(props) {
+    const data = props;
+    const [showInfo, setshowInfo] = useState(false)
+    const buttonHandle = function() {
+        setshowInfo(current => !current)
     }
+
+    return (
+        <Fragment>
+            <ContainCard
+                onClick={buttonHandle}
+            >
+            <img src={data.image} alt={data.name} />
+            <div className="infos-card">
+                <p>{data.name}</p>
+                <span>{data.species}</span>
+            </div>
+            </ContainCard>
+            { showInfo ? <LightBox data={data} statusLightbox={buttonHandle} /> : null }
+        </Fragment>
+      );
 }
 
-export default Cards
+export default Cards;

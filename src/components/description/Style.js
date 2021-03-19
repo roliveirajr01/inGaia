@@ -36,10 +36,17 @@ export const FormSearch = styled.form `
         background-color: transparent;
         color: var(--white);
         border-radius: 8px;
+        font-weight: bold;
+        
     }
 
     button {
         margin-left: 8px;
+        &:hover {
+            background-color: var(--white);
+            color: black;
+            button: pointer;
+        }
     }
 `
 

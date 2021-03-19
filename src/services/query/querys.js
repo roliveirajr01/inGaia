@@ -1,15 +1,31 @@
 import gql from 'graphql-tag';
 
 const listQuery = gql`
-query ($name: String!){
-    characters(page: 2, filter: { name: $name }) {
-      results {
+query ($name: String!, $page: Int){
+  characters( page: $page, filter: { name: $name }) {
+   info {
+    count
+    pages
+    next
+    prev
+  }
+    results {
+      name
+      image
+      species
+      created
+      gender
+      status
+      type   
+      location {
+      	name
+    	}
+      origin {
         name
-        image
-        species
       }
     }
   }
+}
 `
 
 export default listQuery
