@@ -6,10 +6,18 @@ export const ContainCard = styled.div `
     margin-bottom: 24px;
     border-radius: 8px;
     overflow: hidden;
+    filter: grayscale(1);
+    border: solid 3px transparent;
 
     &:nth-child(1) {
         margin-top: 47px;
     }
+
+    &:hover {
+        filter: grayscale(0);
+        border: solid 3px #CBD736
+    }
+
     img {
         position: relative;
         top: 0;

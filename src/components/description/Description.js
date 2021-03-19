@@ -1,54 +1,60 @@
-import React, { useState, Fragment } from 'react'
-import { DescriptionContain, ImageLogo, FormSearch, ContainerList } from './Style'
-import Cards from './../cards/Cards'
-import imageTop from '../../img/image-top.svg'
-import listQuery from '../../services/query/querys'
-import { graphql, Query } from 'react-apollo'
-import ApolloClient from '../../services/apollo'
-import { ApolloProvider, useLazyQuery } from '@apollo/client'
-import { ApolloProvider as ApolloHooksProvider } from '@apollo/react-hooks'
+import React, { useState, Fragment } from "react";
+import {
+  DescriptionContain,
+  ImageLogo,
+  FormSearch,
+  ContainerList,
+} from "./Style";
+import Cards from "./../cards/Cards";
+import imageTop from "../../img/image-top.svg";
+import listQuery from "../../services/query/querys";
+import { useLazyQuery } from "@apollo/client";
+
 const Description = function (props) {
-    const [searchFilter, setSearchFilter] = useState('');
-    const [executeSearch, { data }] = useLazyQuery(listQuery)
-    return (
-        <Fragment>
-            
-                <DescriptionContain>
-                    <ImageLogo src={imageTop} />
-                    <FormSearch>
-                        <input
-                            name="search"
-                            placeholder="Search characters"
-                            onChange={(e) => setSearchFilter(e.target.value)}
-                        />
-                        <button
-                            type="submit"
-                            onClick={(e) =>
-                                e.preventDefault(),
-                                executeSearch({
-                                    variables: { name: searchFilter }
-                                })
-                            }
-                        >Search</button>
-                    </FormSearch>
+  const [searchFilter, setSearchFilter] = useState("");
+  const [executeSearch, { data }] = useLazyQuery(listQuery);
 
-                </DescriptionContain>
+  const handleClick = (e) => {
+    e.preventDefault();
+    executeSearch({
+      variables: { name: searchFilter },
+    });
+  };
 
-            
-            <ContainerList>
-                <Cards
-                    name='teste'
-                    image='teste'
-                    species='teste'
-                    key='teste'
-                />
-            </ContainerList>
+  return (
+    <Fragment>
+      <DescriptionContain>
+        <ImageLogo src={imageTop} />
+        <FormSearch>
+          <input
+            name="search"
+            placeholder="Search characters"
+            onChange={(e) => setSearchFilter(e.target.value)}
+          />
+          <button type="submit" onClick={handleClick}>
+            Search
+          </button>
+        </FormSearch>
+      </DescriptionContain>
 
+      <ContainerList>
+        {data?.characters?.results?.map(function (item, i) {
+          return (
+            <Cards
+              key={i}
+              data={item}
+              name={item.name}
+              image={item.image}
+              species={item.species}
+              created={item.created}
+              gender={item.gender}
+              status={item.status}
+            />
+          );
+        })}
+      </ContainerList>
+    </Fragment>
+  );
+};
 
-        </Fragment>
-    )
-}
-
-export default graphql(listQuery, {
-    name: 'list'
-})(Description);
+export default Description;
